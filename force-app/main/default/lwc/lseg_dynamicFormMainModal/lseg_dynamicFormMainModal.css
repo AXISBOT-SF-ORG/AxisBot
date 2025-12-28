@@ -1,0 +1,83 @@
+.modal {
+  position: fixed;
+  display: block;
+  z-index: 5000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  overflow: auto;
+  padding-top: 100px;
+}
+
+.modal-content {
+  border: none !important;
+  width: 533px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #fefefe;
+  position: fixed;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.close {
+  float: right;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  padding: 8px;
+  align-items: center;
+  background: none;
+  border: none;
+  color: #aaaaaa;
+  margin: 16px 24px 0 0;
+}
+
+.caseModal {
+  padding: 0 32px;
+}
+
+.heading-h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000000;
+  margin: 0;
+}
+
+.signInModalText {
+  margin-top: 84px;
+}
+
+.instructionsModalText {
+  text-align: left;
+  margin-top: 16px;
+}
+
+.signin-button {
+  margin-top: 24px;
+  padding-left: 24px;
+  padding-right: 24px;
+  border: none;
+  border-radius: 5px;
+  background-color: #2d9f7d;
+  border-color: #114025;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  height: 44px;
+}
+
+.signin-button:focus-visible {
+  background-color: #1b4b30;
+}
+.signin-button:hover {
+  background-color: #1b4b30;
+}

@@ -1,0 +1,151 @@
+<template>
+  <div class="container">
+    <h1>🤖 Salesforce Release Notes AI Agent</h1>
+    <p>
+      This Experience Cloud application provides an AI-powered conversational
+      interface to explore Salesforce Release Notes across multiple releases
+      (Winter ’26, Spring ’25, etc.) using Retrieval-Augmented Generation (RAG).
+    </p>
+
+    <!-- High-level -->
+    <div class="section">
+      <h2>High-Level Architecture</h2>
+
+      <div class="flow">
+        <div class="box">
+          <strong>Experience Cloud UI (LWC)</strong>
+          <ul>
+            <li>Chat interface built with Lightning Web Components</li>
+            <li>Release picker (Winter 26, Spring 25, …)</li>
+            <li>Displays formatted answers, insights, and citations</li>
+          </ul>
+        </div>
+
+        <div class="arrow">⬇</div>
+
+        <div class="box">
+          <strong>AWS Lambda (API Layer)</strong>
+          <ul>
+            <li>Receives user questions from Experience Cloud</li>
+            <li>Loads the correct FAISS vector index per release</li>
+            <li>Orchestrates retrieval and LLM inference</li>
+          </ul>
+        </div>
+
+        <div class="arrow">⬇</div>
+
+        <div class="box">
+          <strong>Vector Store (FAISS on S3)</strong>
+          <ul>
+            <li>Each Salesforce release has its own index</li>
+            <li>
+              Example:
+              <code>winter26.faiss</code> +
+              <code>winter26.pkl</code>
+            </li>
+            <li>
+              Indexes are cached in Lambda <code>/tmp</code> for performance
+            </li>
+          </ul>
+        </div>
+
+        <div class="arrow">⬇</div>
+
+        <div class="box">
+          <strong>Amazon Bedrock</strong>
+          <ul>
+            <li>Embeddings: <code>amazon.titan-embed-text-v2</code></li>
+            <li>LLM: <code>openai.gpt-oss-20b</code></li>
+            <li>Context-aware answer generation</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detailed flow -->
+    <div class="section">
+      <h2>Detailed Request Flow</h2>
+
+      <ol>
+        <li>User selects a Salesforce release and enters a question.</li>
+        <li>
+          LWC sends a request to AWS Lambda with:
+          <ul>
+            <li>Question</li>
+            <li>Selected release</li>
+            <li>LLM configuration (tokens, temperature)</li>
+            <li>Insights flag</li>
+          </ul>
+        </li>
+        <li>
+          Lambda loads the corresponding FAISS index from S3 (cached if already
+          present).
+        </li>
+        <li>
+          A similarity search retrieves the most relevant sections from the
+          release notes.
+        </li>
+        <li>Retrieved context is injected into a structured prompt.</li>
+        <li>Amazon Bedrock generates a concise Salesforce-specific answer.</li>
+        <li>
+          Lambda returns:
+          <ul>
+            <li>Final answer (Markdown)</li>
+            <li>Optional reasoning</li>
+            <li>Performance insights and source documents</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+
+    <!-- Insights -->
+    <div class="section">
+      <h2>Insights & Observability</h2>
+
+      <div class="box">
+        <p>
+          When insights are enabled, the agent provides transparency into how
+          each response was generated:
+        </p>
+        <ul>
+          <li>⏱ Time taken to load FAISS index from S3</li>
+          <li>⏱ LLM inference duration</li>
+          <li>📄 Number of documents retrieved</li>
+          <li>📚 Source documents with page-level metadata</li>
+          <li>🧠 Optional reasoning (hidden by default)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Security -->
+    <div class="section">
+      <h2>Security & Governance</h2>
+
+      <ul>
+        <li>No Salesforce org data is indexed or exposed</li>
+        <li>Only public Salesforce Release Notes are embedded</li>
+        <li>LLM responses are grounded strictly in retrieved context</li>
+        <li>CSP-safe architecture for Experience Cloud</li>
+      </ul>
+    </div>
+
+    <!-- Why -->
+    <div class="section">
+      <h2>Why This Architecture</h2>
+
+      <ul>
+        <li>📌 Accurate answers grounded in official documentation</li>
+        <li>📌 Scales easily across multiple Salesforce releases</li>
+        <li>📌 Fast responses using vector caching</li>
+        <li>📌 Transparent, explainable AI output</li>
+      </ul>
+    </div>
+
+    <div class="footer">
+      <p>
+        Built with Salesforce Experience Cloud, Lightning Web Components,
+        LangChain, FAISS, and Amazon Bedrock.
+      </p>
+    </div>
+  </div>
+</template>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Inflight_Quantity_Check</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( NOT( ISNULL( In_flight_Quantity__c ) ) , NOT(ISPICKVAL( Status ,&apos;In-flight Removal&apos;)))</errorConditionFormula>
+    <errorDisplayField>In_flight_Quantity__c</errorDisplayField>
+    <errorMessage>Inflight Quantity should be empty when changing the Asset Status.</errorMessage>
+</ValidationRule>

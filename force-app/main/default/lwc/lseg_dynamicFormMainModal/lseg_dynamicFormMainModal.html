@@ -1,0 +1,41 @@
+<template>
+  <div class="modal" id="myModal">
+    <div class="modal-content">
+      <template lwc:if={onSubmitLoad}>
+        <c-lseg_spinner
+          spinnerstyle="width: 533px;left:unset;"
+        ></c-lseg_spinner>
+      </template>
+      <div
+        role="alert"
+        aria-live="polite"
+        class="modal-announcement"
+        id="modal-announce"
+      ></div>
+      <template lwc:if={authenticatePage}> Authenticate Page </template>
+      <template lwc:if={unAuthenticatePage}>
+        <button class="close" onclick={handleModalClose}>X</button>
+        <div class="caseModal">
+          <h3 class="heading-h4 signInModalText">
+            Please Sign In if you have an account.<br />
+            If not, you can raise a case and our agents will be in touch.
+          </h3>
+          <h3 class="heading-h4 instructionsModalText">
+            You can use your existing MyAccount, Workspace and World-Check
+            credentials to sign into this site.
+          </h3>
+          <hr class="lineBreak" />
+          <h3>I have an Account</h3>
+          <button class="signin-button">Sign in to your Account</button>
+          <h3>I want to Sign Up for a new Account</h3>
+          <button class="signin-button" onclick={handleRegister}>
+            Register
+          </button>
+          <h3>I don't have an Account</h3>
+          <button class="signin-button">Raise a Case</button>
+        </div>
+      </template>
+      <template lwc:if={registrationPage}> Registration Page </template>
+    </div>
+  </div>
+</template>

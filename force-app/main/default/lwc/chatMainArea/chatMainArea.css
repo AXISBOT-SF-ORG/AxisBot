@@ -1,0 +1,279 @@
+.chat-container {
+  /* height: 600px; */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+template,
+:host {
+  --dxp-s-body-font-size: 0.8125rem !important;
+  font-size: var(--dxp-s-body-font-size) !important;
+  --dxp-s-form-element-text-font-size: 0.8125rem !important;
+}
+
+.chat-body {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  background: #f3f3f3;
+}
+
+.chat-footer {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-top: 1px solid #e5e5e5;
+  align-items: center;
+  /* position: fixed; */
+  width: 100%;
+  /* bottom: 0; */
+  background: white;
+}
+
+.input-field {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d3d3d3;
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #0176d3;
+  box-shadow: 0 0 0 3px rgba(1, 118, 211, 0.1);
+}
+
+.input-field:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.button-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #0176d3;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.release-picker {
+  width: 150px;
+  margin-bottom: 0px !important;
+}
+
+.message {
+  display: flex;
+  margin-bottom: 0.75rem;
+}
+
+.message.user {
+  justify-content: flex-end;
+}
+
+.message.bot {
+  justify-content: flex-start;
+}
+
+.bubble {
+  max-width: 70%;
+  padding: 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.9rem;
+}
+
+.message.user .bubble {
+  background: #0176d3;
+  color: white;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.message.bot .bubble {
+  background: white;
+  color: #032d60;
+  border-bottom-left-radius: 0.25rem;
+}
+
+.settings {
+  background-color: white;
+  width: 50%;
+  height: 100%;
+  right: 0;
+  border: 1px solid var(--slds-g-color-border-base-1, #c9c9c9);
+  border-color: var(--slds-g-color-border-base-4, #c9c9c9);
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+  position: absolute;
+}
+
+.text-muted {
+  color: #73767b;
+}
+
+.settings li {
+  padding: 0.25rem;
+}
+
+.gear-button {
+  margin-left: auto;
+}
+
+/* Markdown Content Styles */
+.markdown-content {
+  font-family: inherit;
+  line-height: 1.6;
+  color: inherit;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+  margin: 16px 0 8px 0;
+  font-weight: 600;
+}
+
+.settings-header {
+  margin: 8px 0 8px 0;
+  font-weight: 600;
+  font-size: 24px;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 8px;
+}
+
+.markdown-content h1 {
+  font-size: 24px;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 8px;
+}
+
+.markdown-content h2 {
+  font-size: 20px;
+}
+
+.markdown-content h3 {
+  font-size: 16px;
+}
+
+.markdown-content strong {
+  font-weight: 600;
+  color: #0c5460;
+}
+
+.markdown-content em {
+  font-style: italic;
+}
+
+.markdown-content code {
+  background-color: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: "Monaco", "Courier New", monospace;
+  font-size: 12px;
+}
+
+.markdown-content pre {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 12px;
+  overflow-x: auto;
+  margin: 12px 0;
+}
+
+.markdown-content pre code {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* Table Styles */
+.markdown-content .markdown-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+  border: 1px solid #ddd;
+}
+
+.markdown-content .markdown-table thead {
+  background-color: #f8f9fa;
+}
+
+.markdown-content .markdown-table th {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  background-color: #f8f9fa;
+  color: #0c5460;
+}
+
+.markdown-content .markdown-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  vertical-align: top;
+}
+
+.markdown-content .markdown-table tbody tr:nth-child(even) {
+  background-color: #fafbfc;
+}
+
+.markdown-content .markdown-table tbody tr:hover {
+  background-color: #f0f0f0;
+}
+
+/* List Styles */
+.markdown-content ul,
+.markdown-content ol {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+
+.markdown-content li {
+  margin: 6px 0;
+}
+
+.markdown-content ul li::marker {
+  color: #0c5460;
+}
+
+.markdown-content ol li::marker {
+  color: #0c5460;
+  font-weight: 600;
+}
+
+/* Line breaks */
+.markdown-content br {
+  display: block;
+  content: "";
+  margin: 4px 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.body {
+  flex: 1;
+  overflow: auto;
+}

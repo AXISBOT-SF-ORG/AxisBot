@@ -1,0 +1,90 @@
+<apex:page controller="CommercialCancellationController" lightningStylesheets="true" docType="html-5.0">
+    <style>
+        .background{
+        	background-color:#d8ddf0;
+        	padding:1rem;
+        	border-radius:0.25rem;
+        }
+        .table{
+        	width:100%;
+        }
+    </style>
+    <div class="background">
+        <h1>
+        Asset Management
+    	</h1>
+        <apex:outputPanel id="alertSection">
+            <apex:pageMessage severity="Error" detail="{!pageAlert}" rendered="{!showAlert}"></apex:pageMessage>
+        </apex:outputPanel>
+        <div class="table">
+        <!-- Table Panel -->
+    	<apex:form >
+        	<apex:outputPanel id="assetPanel">
+                <apex:pageBlock title="{!'Assets for Account '+accountNumber}" mode="edit" rendered="{!hasAssets}">
+                    	<apex:panelGroup style="margin: 10px 10px;">
+                            <apex:outputText label="Select Operation:" value="Select Operation: "/>
+                            <apex:selectList label="Select Operation Type" title="Select Operation:" value="{!operation}" size="1">
+                            	<apex:selectOptions value="{!operationOptions}"></apex:selectOptions>
+                    		</apex:selectList>
+                    	</apex:panelGroup>
+    	            	<apex:pageBlockTable value="{!wrappedAssets}" style="margin-top:10px;" var="ass" columns="8">
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:inputCheckbox />
+                                </apex:facet>
+                                <apex:inputCheckbox value="{!ass.checked}">
+                                    <apex:actionSupport action="{!clearAlertOnSelection}" event="onchange" reRender="alertSection"/>
+                                </apex:inputCheckbox>
+                            </apex:column>  
+                            <apex:column headerValue="Date">
+                                <apex:input type="date" value="{!ass.selectedDate}"/>
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!IF(sortField=='Product2.Name','['+sortDirection+'] ProductName','ProductName')}" action="{!sortByProduct}"/>
+                                </apex:facet>
+                                <apex:outputText value="{!ass.Asset.Product2.Name}"/>
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="{!IF(sortField=='Name','['+sortDirection+'] Asset Name','Asset Name')}" action="{!sortByAssetName}"/>
+                                </apex:facet>
+                                <apex:outputText value="{!ass.Asset.Name}"/>
+                            </apex:column>
+                            <apex:column headerValue="Account Number">
+                                <apex:outputText value="{!ass.Asset.Account.AccountNumber}"/>
+                            </apex:column>
+                            <apex:column headerValue="Quantity">
+                                <apex:outputText value="{!ass.Asset.Quantity}"/>
+                            </apex:column>
+                            <apex:column headerValue="Net Unit Price">
+                                <apex:outputText value="{!ass.Asset.Price}"/>
+                            </apex:column>
+                            <apex:column headerValue="Status">
+                                <apex:outputText value="{!ass.Asset.Status}"/>
+                            </apex:column>
+	    	            </apex:pageBlockTable>
+                </apex:pageBlock>
+                <apex:pageBlock rendered="{!NOT(hasAssets)}">
+                    <apex:outputText >Selected Account dosent have any Assets</apex:outputText>
+                </apex:pageBlock>
+                <apex:outputPanel style="background-color:#d8ddf0;" rendered="{!hasAssets}">
+                    <apex:panelGrid columns="2">
+                        <apex:commandButton action="{!submitRecords}" value="Submit"/>
+                        <apex:commandButton value="Close"/>
+                    </apex:panelGrid>
+                    <apex:panelGrid bgcolor="red" columns="4">
+                            <apex:commandButton value="Previous" />
+                        	<apex:outputText value="Page {!pageNumber} of {!totalPages}"/>
+                        	<apex:commandButton value="Next" />
+                        	<apex:selectList value="{!pageSize}" size="1" onchange="this.form.submit()">
+                            	<apex:selectOptions value="{!pageOptions}"></apex:selectOptions>
+                        	</apex:selectList>
+                    </apex:panelGrid>
+                </apex:outputPanel>
+    	    </apex:outputPanel>
+	    </apex:form>
+    </div>
+    </div>
+    
+</apex:page>

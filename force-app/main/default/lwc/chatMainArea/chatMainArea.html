@@ -1,0 +1,169 @@
+<template>
+  <div class="container">
+    <div class="header">
+      <c-navbar></c-navbar>
+    </div>
+    <div class="body">
+      <section class="chat-container slds-card">
+        <!-- Header -->
+        <div
+          class="slds-card__header slds-grid slds-grid_vertical-align-center slds-var-m-right_small"
+        >
+          <h2 class="slds-text-heading_medium slds-var-m-right_small">
+            🤖 Pick Release:
+          </h2>
+          <div class="slds-align-middle">
+            <lightning-combobox
+              name="release"
+              label="Release"
+              value={selectedRelease}
+              options={releaseOptions}
+              onchange={handleReleaseChange}
+              variant="label-hidden"
+              class="release-picker"
+            >
+            </lightning-combobox>
+          </div>
+          <div class="gear-button">
+            <lightning-button-icon
+              icon-name="utility:settings"
+              alternative-text="Settings"
+              title="Settings"
+              onclick={handleSettings}
+            ></lightning-button-icon>
+          </div>
+        </div>
+
+        <!-- Chat Body -->
+        <div class="chat-body">
+          <template for:each={messages} for:item="msg">
+            <template lwc:if={msg.hasLogs}>
+              <template lwc:if={msg.logInfo}>
+                <div key={msg.id} class="text-muted">
+                  <div>
+                    <p>
+                      <strong>{msg.logInfo.timings.faissLoadMs} ms</strong> to
+                      load vectors from S3
+                    </p>
+                    <p>
+                      <strong>{msg.logInfo.timings.llmInferenceMs} ms</strong>
+                      to generate response from LLM
+                    </p>
+                    <p><strong>Max Tokens: </strong>{maxTokens}</p>
+                    <p><strong>Reasoning:</strong> {msg.logInfo.reasoning}</p>
+                    <p><strong>Similarity Search Results:</strong></p>
+                    <p style="text-indent: 2em">
+                      <strong>Documents Returned: </strong>
+                      {msg.logInfo.retrieval.documentsReturned}
+                    </p>
+                  </div>
+                </div>
+              </template>
+            </template>
+            <div key={msg.id} class={msg.cssClass}>
+              <template lwc:if={msg.htmlContent}>
+                <div
+                  class="bubble markdown-content"
+                  data-id={msg.id}
+                  lwc:dom="manual"
+                ></div>
+              </template>
+
+              <template lwc:else>
+                <div class="bubble">{msg.text}</div>
+              </template>
+            </div>
+          </template>
+        </div>
+      </section>
+    </div>
+    <div class="footer">
+      <!-- Input -->
+      <div class="chat-footer">
+        <input
+          type="text"
+          placeholder="Ask about Salesforce release notes..."
+          value={userInput}
+          onchange={handleInputChange}
+          onkeypress={handleKeyPress}
+          class="input-field"
+          disabled={isLoading}
+        />
+        <div class="button-wrapper">
+          <template if:true={isLoading}>
+            <div class="spinner"></div>
+          </template>
+          <lightning-button
+            variant="brand"
+            label="Send"
+            class="send-btn"
+            onclick={handleSend}
+            disabled={isLoading}
+          >
+          </lightning-button>
+        </div>
+      </div>
+    </div>
+    <template lwc:if={displaySettings}>
+      <div class="settings" style={settingsDialogStyles}>
+        <h1 class="settings-header">Settings</h1>
+        <ul>
+          <li>
+            <div class="slds-form-element">
+              <div class="slds-form-element__control">
+                <div class="slds-checkbox">
+                  <input
+                    type="checkbox"
+                    name="options"
+                    id="checkbox-unique-id-81"
+                    value="checkbox-unique-id-81"
+                    checked={displayLogs}
+                    onchange={handleDisplayLogsChange}
+                  />
+                  <label
+                    class="slds-checkbox__label"
+                    for="checkbox-unique-id-81"
+                  >
+                    <span class="slds-checkbox_faux"></span>
+                    <span class="slds-form-element__label">Display Logs</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <lightning-input
+              type="number"
+              label="Maximum Tokens"
+              value={maxTokens}
+              required
+              onchange={handleTokenChange}
+            ></lightning-input>
+          </li>
+          <li>
+            <lightning-input
+              type="text"
+              readonly
+              label="Embedding Model"
+              value="amazon.titan-embed-text-v2:0"
+            ></lightning-input>
+          </li>
+          <li>
+            <lightning-input
+              type="text"
+              readonly
+              label="Foundation Model"
+              value="openai.gpt-oss-20b-1:0"
+            ></lightning-input>
+          </li>
+        </ul>
+
+        <lightning-button
+          variant="brand"
+          label="Close"
+          onclick={handleClose}
+        ></lightning-button>
+      </div>
+    </template>
+  </div>
+</template>

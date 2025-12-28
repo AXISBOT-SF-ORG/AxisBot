@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Genesis_Pricebook</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Genesis Pricebook</shortDescription>
+        <value>01sNS00000DmHyLYAV</value>
+    </labels>
+</CustomLabels>
